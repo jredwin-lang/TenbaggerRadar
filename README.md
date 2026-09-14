@@ -18,3 +18,5 @@
 공식 설정 안내: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
 
 게시용 파일에는 Sites 계정 설정이나 인증 정보가 포함되어 있지 않습니다. 대시보드와 내장 시세 데이터는 공개 게시 시 누구나 볼 수 있습니다.
+
+갱신 방식과 기록 범위: [갱신 안내](UPDATE-SCHEDULE.md). 현재 화면 버전 v2.3은 매크로를 첫 화면으로 표시하고 날짜별 거래대금·거래량 랭킹을 제공합니다.

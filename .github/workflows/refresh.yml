@@ -1,7 +1,7 @@
 name: Refresh Radar
 on:
   push:
-    paths: [template.html, refresh.cjs, market-app.js, market.css, collect.cjs, compact.cjs, watch-config.json, monthly-review.cjs, .github/workflows/refresh.yml]
+    paths: [template.html, refresh.cjs, market-app.js, market.css, collect.cjs, compact.cjs, watch-config.json, monthly-review.cjs, company-notes.json, enrich.cjs, archive-rankings.cjs, .github/workflows/refresh.yml]
   schedule:
     - cron: '0 7,22 * * *'
       timezone: Asia/Seoul
@@ -27,18 +27,23 @@ jobs:
       - run: node refresh.cjs
       - name: Collect verified macro, heatmap, US and Korean market records
         run: node collect.cjs
+      - name: Collect company descriptions and recent article metadata
+        run: node enrich.cjs
+      - name: Archive dated rankings
+        run: node archive-rankings.cjs
       - name: Preserve history and refreshed inputs
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add index.html inputs.json market.json history signature.json
+          git add index.html inputs.json market.json history signature.json ranking-history
           git diff --staged --quiet || git commit -m "Refresh verified market data and archive opinion changes"
           git push
       - uses: actions/configure-pages@v5
       - name: Prepare public site
         run: |
           mkdir _site
-          cp index.html .nojekyll market.json market-app.js market.css _site/
+          cp index.html .nojekyll market.json market-app.js market.css company-notes.json _site/
+          cp -r ranking-history _site/
           if [ -f monthly-review.json ]; then cp monthly-review.json _site/; fi
           if [ -d monthly-history ]; then cp -r monthly-history _site/; fi
           cp -r history _site/

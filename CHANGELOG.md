@@ -12,3 +12,9 @@
 - Colored spaced timing grades; CNN-shaped segmented gauge and human-readable source links.
 - Remove nested vertical sector scrolling; add 21-trading-day return and sourced high/low price range with completed-close marker.
 - Balance watch details into candle/volume/MA left column and state/metrics right column. Range periods shorter than 252 bars are explicitly labeled.
+
+# v2.3
+
+- Macro-first navigation and requested index/FX/commodity/crypto cards with completed-bar sparklines.
+- Compact dated turnover/volume rankings, industry labels, trailing interest controls and historical snapshots starting with this revision.
+- Source-linked issuer summaries, conditional outlooks and recent RSS article metadata. Missing descriptions/news and unreviewed article bodies explicitly labeled.

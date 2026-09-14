@@ -1,0 +1,285 @@
+{
+  "checkedAt": "2026-09-14",
+  "companies": {
+    "us:RCAT": {
+      "description": "드론과 무인 시스템을 개발하는 기업입니다.",
+      "reason": "드론 운용 확대가 제품 공급과 반복 주문으로 이어지는지 추적합니다.",
+      "outlook": "수주를 생산·납품·현금흐름으로 전환해야 성장 논리가 강화됩니다. 계약 지연과 생산 확대 비용은 반대 시나리오입니다.",
+      "source": "https://redcat.red/",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "us:RKLB": {
+      "description": "발사 서비스, 우주선·위성 부품과 우주 시스템을 제공하는 기업입니다.",
+      "reason": "발사 및 우주 시스템 사업의 동반 성장을 관찰합니다.",
+      "outlook": "발사·제조 수요가 실적에 연결될 수 있지만 신규 개발 일정과 자본 지출을 함께 확인해야 합니다.",
+      "source": "https://rocketlabcorp.com/about/about-us/",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "us:TEM": {
+      "description": "데이터와 AI를 활용해 정밀의료·진단 서비스를 제공하는 기업입니다.",
+      "reason": "의료 데이터 활용과 진단 서비스의 확장을 관찰합니다.",
+      "outlook": "검사와 데이터 서비스 성장의 수익화가 중요하며 비용·규제·개인정보 제약을 함께 점검합니다.",
+      "source": "https://www.tempus.com/about-us/",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "us:APLD": {
+      "description": "차세대 컴퓨팅을 위한 고성능 디지털 인프라를 개발·운영하는 기업입니다.",
+      "reason": "AI 인프라의 전력·데이터센터 공급 병목 해결 가능성을 추적합니다.",
+      "outlook": "계약이 실제 가동과 현금흐름으로 전환돼야 하며 자금조달·건설 지연이 핵심 위험입니다.",
+      "source": "https://www.applieddigital.com/digital-infrastructure",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "us:OKLO": {
+      "description": "고속 핵분열 발전 기술과 발전소를 개발하는 기업입니다.",
+      "reason": "전력 공급 확대를 위한 기술·사업 진척을 관찰합니다.",
+      "outlook": "인허가·연료·건설·상업 가동을 검증해야 합니다. 전력 수요 전망만으로 매출 실현을 확정하지 않습니다.",
+      "source": "https://oklo.com/about/company-overview",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "us:PRAX": {
+      "description": "중추신경계 질환 치료제를 개발하는 정밀 신경과학 바이오 기업입니다.",
+      "reason": "임상과 허가 결과가 치료제 사업성으로 이어지는지 추적합니다.",
+      "outlook": "임상·허가·상업화 성공 여부가 핵심이며 실패나 일정 변경 시 투자 논리가 크게 달라질 수 있습니다.",
+      "source": "https://praxismedicines.com/",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "us:IONQ": {
+      "description": "이온트랩 방식의 양자 컴퓨팅과 양자 네트워킹·센싱을 개발하는 기업입니다.",
+      "reason": "기술 성과가 유료 사용과 고객 사업으로 연결되는지 추적합니다.",
+      "outlook": "시스템 확장과 실제 활용 검증이 중요하며 경쟁 기술·상업화 지연·자금 소모가 반대 시나리오입니다.",
+      "source": "https://www.ionq.com/company",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "us:RGTI": {
+      "description": "양자 프로세서와 양자 컴퓨팅 시스템을 개발하는 기업입니다.",
+      "reason": "프로세서·시스템 성능과 고객 활용의 진전을 관찰합니다.",
+      "outlook": "성능 개선이 고객 매출로 이어져야 하며 기술 경쟁과 상업화 지연을 점검합니다.",
+      "source": "https://www.rigetti.com/what-we-build",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "us:JOBY": {
+      "description": "전기 수직이착륙 에어택시와 관련 운항 서비스를 개발하는 기업입니다.",
+      "reason": "항공 인증과 생산·운항 준비의 진척을 추적합니다.",
+      "outlook": "인증 이후 생산·운항 수익성 검증이 필요합니다. 인프라·운항 비용·일정 지연을 함께 확인합니다.",
+      "source": "https://www.jobyaviation.com/technology",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "us:ACHR": {
+      "description": "전기 에어택시를 개발하고 인증·서비스 도입을 추진하는 기업입니다.",
+      "reason": "기체 인증과 서비스 상용화 준비를 추적합니다.",
+      "outlook": "상업 운항·생산 확대·자금조달을 확인해야 하며 발표된 계획을 확정 매출로 해석하지 않습니다.",
+      "source": "https://archer.com/certification",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:005930": {
+      "description": "메모리·시스템 반도체 등 전자 사업을 영위하는 기업입니다.",
+      "reason": "반도체 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://news.samsung.com/kr/",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:000660": {
+      "description": "HBM과 AI 서버 메모리를 포함한 메모리 반도체을 영위하는 기업입니다.",
+      "reason": "반도체 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://news.skhynix.com/en/q2-2026-business-results/",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:042700": {
+      "description": "TC 본더 등 반도체 장비을 영위하는 기업입니다.",
+      "reason": "반도체 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://technology-products.dksh.com/product/hanmi-tc-bonder/",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:010120": {
+      "description": "전력기기·배전 및 데이터센터 전력 솔루션을 영위하는 기업입니다.",
+      "reason": "전력 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://www.ls-electric.com/ko/pr/",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:267260": {
+      "description": "변압기 등 전력기기을 영위하는 기업입니다.",
+      "reason": "전력 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://www.hd-hyundaielectric.com/elec/ko/index.jsp",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:298040": {
+      "description": "초고압 변압기·HVDC 등 전력 인프라을 영위하는 기업입니다.",
+      "reason": "전력 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://www.hyosungheavyindustries.com/kr/company/info/rnd",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:005380": {
+      "description": "완성차와 로보틱스 확장 사업을 영위하는 기업입니다.",
+      "reason": "현대차 밸류체인 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://www.hyundai.com/kr/ko/brand/brandstory/campaigns/ces-2026-robotics-media-day",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:012330": {
+      "description": "자동차 부품 및 로보틱스 관련 개발을 영위하는 기업입니다.",
+      "reason": "현대차 밸류체인 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://careers.mobis.com/jobs-view?seq=3436",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:307950": {
+      "description": "차량 소프트웨어와 SDV 플랫폼을 영위하는 기업입니다.",
+      "reason": "현대차 밸류체인 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://www.hyundai-autoever.com/",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:454910": {
+      "description": "협동로봇과 자동화 솔루션을 영위하는 기업입니다.",
+      "reason": "로봇 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://www.doosanrobotics.com/kr/about/company/overview/",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:108490": {
+      "description": "액추에이터·로봇 부품 및 로봇 솔루션을 영위하는 기업입니다.",
+      "reason": "로봇 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://www.robotis.com/ko/",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:012450": {
+      "description": "항공우주·발사체 및 방산 사업을 영위하는 기업입니다.",
+      "reason": "우주 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://www.hanwhaaerospace.com/kor/whoweare/about.do",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:272210": {
+      "description": "방산 전자 및 위성·우주 사업을 영위하는 기업입니다.",
+      "reason": "우주 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://www.hanwha.co.kr/business/manufacture/systems.do",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:099320": {
+      "description": "지구관측 위성 사업을 영위하는 기업입니다.",
+      "reason": "우주 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://www.hanwha.co.kr/newsroom/media_center/news/news_view.do?seq=6242",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:488900": {
+      "description": "우주항공·핵융합 관련 기술 사업을 영위하는 기업입니다.",
+      "reason": "우주 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://vitzronextech.irpage.co.kr/",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:478340": {
+      "description": "초소형 위성 제작·운용과 위성 영상 활용을 영위하는 기업입니다.",
+      "reason": "우주 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://naraspace.com/ko/naraspace/media",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:274090": {
+      "description": "항공·방산·우주 관련 부품 및 가공·조립을 영위하는 기업입니다.",
+      "reason": "우주 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://kencoaaerospace.com/",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:295310": {
+      "description": "특수 진공 용해 기술 기반 금속 소재을 영위하는 기업입니다.",
+      "reason": "우주 사업 변화가 실적에 연결되는지 관찰합니다.",
+      "outlook": "수주·사업 계획의 매출 전환, 이익률·현금흐름과 현재 가격 부담을 함께 확인합니다. 신규 사업 발표는 확정 실적이 아닙니다.",
+      "source": "https://hvm.co.kr/en-main",
+      "descriptionType": "공식 사업 자료 요약 · Fact",
+      "asOf": "2026-09-14",
+      "outlookType": "조건부 전망 · Opinion"
+    },
+    "kr:015760": {
+      "description": "전력의 송배전과 판매를 담당하는 전력 공기업입니다.",
+      "source": "https://www.kepco.co.kr/home/business/salesbus.do",
+      "asOf": "2026-09-14",
+      "reason": "관련 산업의 수요 변화가 수주와 실적에 연결되는지 관찰합니다.",
+      "outlook": "사업 계약의 매출 전환과 이익률·현금흐름을 확인합니다. 정책·수주 기대만으로 실적 개선을 확정하지 않습니다."
+    },
+    "kr:064350": {
+      "description": "철도·방산·플랜트 사업을 영위하는 기업입니다.",
+      "source": "https://www.hyundai-rotem.co.kr/ko/main/index.do",
+      "asOf": "2026-09-14",
+      "reason": "관련 산업의 수요 변화가 수주와 실적에 연결되는지 관찰합니다.",
+      "outlook": "사업 계약의 매출 전환과 이익률·현금흐름을 확인합니다. 정책·수주 기대만으로 실적 개선을 확정하지 않습니다."
+    },
+    "kr:047810": {
+      "description": "항공기·우주·애프터마켓 사업을 영위하는 항공우주 기업입니다.",
+      "source": "https://www.koreaaero.com/",
+      "asOf": "2026-09-14",
+      "reason": "관련 산업의 수요 변화가 수주와 실적에 연결되는지 관찰합니다.",
+      "outlook": "사업 계약의 매출 전환과 이익률·현금흐름을 확인합니다. 정책·수주 기대만으로 실적 개선을 확정하지 않습니다."
+    },
+    "kr:079550": {
+      "description": "유도무기·감시정찰 등 정밀 방산 사업을 영위하는 기업입니다.",
+      "source": "https://kind.krx.co.kr/external/2026/03/23/001725/20260323007318/11011.htm",
+      "asOf": "2026-09-14",
+      "reason": "관련 산업의 수요 변화가 수주와 실적에 연결되는지 관찰합니다.",
+      "outlook": "사업 계약의 매출 전환과 이익률·현금흐름을 확인합니다. 정책·수주 기대만으로 실적 개선을 확정하지 않습니다."
+    }
+  }
+}
