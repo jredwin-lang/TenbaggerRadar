@@ -5,6 +5,7 @@ const compactContext=compactVm.createContext({});compactVm.runInContext(calcSour
 const full=JSON.parse(compactFs.readFileSync('market.json','utf8'));
 for(const stock of [...full.us,...full.macro,...full.kr.filter(s=>s.daily)]){
  const daily=stock.daily||stock;compactContext.stock=stock;daily.metrics=compactVm.runInContext('calc(stock)',compactContext);
+ daily.maSeries=Object.fromEntries([20,60,120].map(n=>['m'+n,daily.rows.map((_,i)=>i+1<n?null:daily.rows.slice(i+1-n,i+1).reduce((sum,r)=>sum+r[4],0)/n).slice(-120)]));
  daily.rows=daily.rows.slice(-120);
 }
 compactFs.writeFileSync('market.json',JSON.stringify(full));

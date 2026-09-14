@@ -1,7 +1,7 @@
 name: Refresh Radar
 on:
   push:
-    paths: [template.html, refresh.cjs, market-app.js, market.css, collect.cjs, compact.cjs, .github/workflows/refresh.yml]
+    paths: [template.html, refresh.cjs, market-app.js, market.css, collect.cjs, compact.cjs, watch-config.json, monthly-review.cjs, .github/workflows/refresh.yml]
   schedule:
     - cron: '0 7,22 * * *'
       timezone: Asia/Seoul
@@ -39,6 +39,8 @@ jobs:
         run: |
           mkdir _site
           cp index.html .nojekyll market.json market-app.js market.css _site/
+          if [ -f monthly-review.json ]; then cp monthly-review.json _site/; fi
+          if [ -d monthly-history ]; then cp -r monthly-history _site/; fi
           cp -r history _site/
       - uses: actions/upload-pages-artifact@v3
         with:
