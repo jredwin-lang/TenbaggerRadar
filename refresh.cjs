@@ -12,7 +12,7 @@ Object.assign(stock,{rows,quotePrice:rows.at(-1)[4],quoteVolume:rows.at(-1)[5],q
 let h=fs.readFileSync('template.html','utf8');
 const date=kst.slice(0,10),last=input.data[0].rows.at(-1)[0];
 if(input.data.some(s=>s.rows.at(-1)[0]!==last))throw Error('inconsistent session dates');
-h=h.replace(/Tenbagger Radar v2\.1 · \d{4}-\d{2}-\d{2}/g,'Tenbagger Radar v2.1 · '+date).replace('정규장 종가 · USD / meta','정규장 종가 · USD / quote.close');
+h=h.replace(/Tenbagger Radar v2\.2 · \d{4}-\d{2}-\d{2}/g,'Tenbagger Radar v2.2 · '+date).replace('정규장 종가 · USD / meta','정규장 종가 · USD / quote.close');
 h=h.replace('/*__INPUTS__*/','const stocks='+JSON.stringify(input.data)+';const korean='+JSON.stringify(input.kr)+';');
 h=h.replace(/2026-09-14 KST/g,date+' KST').replace('2026-09-11 16:00 EDT / 2026-09-12 05:00 KST 정규장 종가',last+' 미국 정규장 완료 일봉');
 h=h.replace('미국 정규장 개장 전이며 당일 프리마켓 시세는 반영하지 않음.','실행시각 '+kst+' KST. 완료된 정규장 일봉만 반영하며 장중·프리마켓 시세는 포함하지 않음.');
