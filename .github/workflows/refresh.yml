@@ -1,5 +1,7 @@
 name: Refresh Radar
 on:
+  push:
+    paths: [template.html, market-app.js, market.css, collect.cjs, compact.cjs, .github/workflows/refresh.yml]
   schedule:
     - cron: '0 7,22 * * *'
       timezone: Asia/Seoul
@@ -23,18 +25,20 @@ jobs:
         with:
           node-version: '22'
       - run: node refresh.cjs
+      - name: Collect verified macro, heatmap, US and Korean market records
+        run: node collect.cjs
       - name: Preserve history and refreshed inputs
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add index.html inputs.json history signature.json
+          git add index.html inputs.json market.json history signature.json
           git diff --staged --quiet || git commit -m "Refresh verified market data and archive opinion changes"
           git push
       - uses: actions/configure-pages@v5
       - name: Prepare public site
         run: |
           mkdir _site
-          cp index.html .nojekyll _site/
+          cp index.html .nojekyll market.json market-app.js market.css _site/
           cp -r history _site/
       - uses: actions/upload-pages-artifact@v3
         with:

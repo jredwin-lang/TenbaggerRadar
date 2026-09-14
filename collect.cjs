@@ -1,0 +1,42 @@
+/* Verified source records only. Unavailable fields remain null; no sample quotes. */
+const fs=require('fs'),vm=require('vm');
+const OUT='market.json',now=new Date(),previous=fs.existsSync(OUT)?JSON.parse(fs.readFileSync(OUT,'utf8')):{};
+const result={retrievedAt:now.toISOString(),us:[],kr:[],macro:[],errors:[],fear:null,heatmap:null};
+const ua={'User-Agent':'Mozilla/5.0'};
+async function get(url,type='json',headers={}){let error;for(let i=0;i<2;i++){try{const r=await fetch(url,{headers:{...ua,...headers},signal:AbortSignal.timeout(25000)});if(!r.ok)throw Error('HTTP '+r.status);return type==='text'?await r.text():await r.json()}catch(e){error=e}}throw error}
+async function pool(list,job,n=5){let i=0;await Promise.all(Array.from({length:n},async()=>{while(i<list.length){const x=list[i++];try{await job(x)}catch(e){result.errors.push({item:String(x.symbol||x),message:e.message})}}}))}
+function objectAt(s,start){let depth=0,quote=null,escaped=false;for(let i=start;i<s.length;i++){let c=s[i];if(quote){if(escaped)escaped=false;else if(c==='\\')escaped=true;else if(c===quote)quote=null;}else if(c==='"'||c==="'")quote=c;else if(c==='{')depth++;else if(c==='}'&&!--depth)return s.slice(start,i+1)}throw Error('source object not closed')}
+async function chart(symbol,zone='America/New_York'){
+ const source='https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(symbol)+'?range=2y&interval=1d&events=splits';
+ const raw=(await get(source)).chart.result?.[0];if(!raw)throw Error('missing chart');const q=raw.indicators.quote[0],local=now.toLocaleString('sv-SE',{timeZone:zone}),day=local.slice(0,10),finished=local.slice(11,16)>=(zone==='Asia/Seoul'?'16:30':'16:00');
+ const rows=raw.timestamp.map((t,i)=>[new Date(t*1000).toLocaleDateString('sv-SE',{timeZone:zone}),q.open[i],q.high[i],q.low[i],q.close[i],q.volume[i]]).filter(r=>(r[0]<day||(finished&&r[0]===day))&&r.slice(1).every(Number.isFinite));
+ if(rows.length<30||Date.parse(day)-Date.parse(rows.at(-1)[0])>8*86400000)throw Error('invalid or stale daily history');
+ const anomalies=rows.filter(r=>r[2]<Math.max(r[1],r[3],r[4])||r[3]>Math.min(r[1],r[2],r[4]));
+ return {symbol,anomalies,name:raw.meta.longName||raw.meta.shortName||symbol,currency:raw.meta.currency,rows,source,retrievedAt:now.toISOString(),splits:raw.events?.splits||{}};
+}
+async function main(){
+ try{
+ const url='https://finviz.com/map.ashx?t=sp500',page=await get(url,'text'),asset=page.match(/href="([^" ]+)" data-chunk-id="map_base_sec"/);if(!asset)throw Error('map dataset location changed');
+ const assetUrl='https://finviz.com'+asset[1],code=await get(assetUrl,'text'),start=code.indexOf('{name:"Root"');if(start<0)throw Error('map hierarchy missing');const tree=vm.runInNewContext('('+objectAt(code,start)+')',{}, {timeout:1000});
+ const p=page.indexOf('initialPerf:'),perf=JSON.parse(objectAt(page,page.indexOf('{',p)));let leaves=[];for(const sector of tree.children)for(const industry of sector.children)for(const s of industry.children)leaves.push({symbol:s.name,name:s.description,sector:sector.name,industry:industry.name,weight:s.value,change:perf.nodes[s.name]??null});
+ if(leaves.length<450||leaves.some(s=>!(s.weight>0)))throw Error('incomplete S&P500 hierarchy');result.heatmap={tree,leaves,source:url,weightsSource:assetUrl,retrievedAt:now.toISOString(),basis:'핀비즈 조회시점의 원본 블록 가중치·일간 등락률. 원본 시세 기준시각 미제공, 지연 가능.'};
+ }catch(e){result.errors.push({item:'S&P500 히트맵',message:e.message});if(previous.heatmap)result.heatmap={...previous.heatmap,stale:true}}
+ const macros=[['^VIX','VIX'],['^GSPC','S&P500'],['^IXIC','나스닥'],['DX-Y.NYB','달러인덱스'],['KRW=X','원/달러'],['GC=F','금 선물'],['CL=F','WTI 선물'],['BTC-USD','비트코인']];
+ await pool(macros,async([symbol,label])=>result.macro.push({...await chart(symbol),label}),4);
+ const selected={'AAPL':'빅테크','MSFT':'빅테크','GOOGL':'빅테크','AMZN':'빅테크','META':'빅테크','TSLA':'빅테크','NVDA':'반도체','AMD':'반도체','INTC':'반도체','MU':'반도체','SNDK':'반도체','AVGO':'반도체','MRVL':'반도체','ARM':'반도체','ASML':'반도체','TSM':'반도체','AMAT':'반도체','LRCX':'반도체','KLAC':'반도체','QCOM':'반도체','TXN':'반도체','ADI':'반도체','ON':'반도체','DELL':'AI 인프라','ANET':'AI 인프라','VRT':'전력','CEG':'전력','VST':'전력','GEV':'전력','ETN':'전력','BE':'전력','OKLO':'전력','SMR':'전력','NBIS':'네오클라우드','CRWV':'네오클라우드','IREN':'네오클라우드','APLD':'네오클라우드','CIFR':'네오클라우드','WULF':'네오클라우드','PLTR':'AI','AI':'AI','SOUN':'AI','PATH':'AI','TEM':'AI','CRWD':'AI','PANW':'AI','DDOG':'AI','SNOW':'AI','NET':'AI','RKLB':'우주','ASTS':'우주','LUNR':'우주','RDW':'우주','RCAT':'우주·방산','COIN':'코인','MSTR':'코인','MARA':'코인','RIOT':'코인','IONQ':'기타','RGTI':'기타','PRAX':'기타','JOBY':'기타','ACHR':'기타','LITE':'AI 인프라','COHR':'AI 인프라','PTC':'기타','UBER':'기타'};
+ let universe=new Map((result.heatmap?.leaves||[]).map(s=>[s.symbol,s]));for(const [symbol,category]of Object.entries(selected))universe.set(symbol,{...universe.get(symbol),symbol,category});
+ await pool([...universe.values()],async s=>result.us.push({...s,...await chart(s.symbol),category:selected[s.symbol]||s.sector||'기타',watchDefault:!!selected[s.symbol]}),6);
+ try{
+ let records=[];for(const market of ['KOSPI','KOSDAQ']){
+ const base='https://m.stock.naver.com/api/stocks/marketValue/'+market+'?pageSize=100&page=',first=await get(base+1);records.push(...first.stocks);const pages=Array.from({length:Math.ceil(first.totalCount/100)-1},(_,i)=>i+2);await pool(pages,async p=>{const r=await get(base+p);records.push(...r.stocks)},4);
+ }
+ const seen=new Set();result.kr=records.filter(s=>s.stockEndType==='stock'&&!seen.has(s.itemCode)&&seen.add(s.itemCode)).map(s=>({symbol:s.itemCode,name:s.stockName,exchange:s.stockExchangeType?.name,price:Number(s.closePriceRaw||s.closePrice?.replaceAll(',','')),change:Number(s.fluctuationsRatio),volume:Number(s.accumulatedTradingVolumeRaw),turnover:Number(s.accumulatedTradingValueRaw),asOf:s.localTradedAt,source:'https://m.stock.naver.com/domestic/stock/'+s.itemCode,retrievedAt:now.toISOString()})).filter(s=>Number.isFinite(s.price)&&s.price>0&&Number.isFinite(s.turnover));
+ const top=[...result.kr].sort((a,b)=>b.turnover-a.turnover).slice(0,70);await pool(top,async s=>{try{const daily=await chart(s.symbol+(s.exchange==='KOSDAQ'?'.KQ':'.KS'),'Asia/Seoul');Object.assign(s,{daily})}catch(e){s.dailyError=e.message}},4);
+ }catch(e){result.errors.push({item:'한국 종목 목록',message:e.message})}
+ try{const source='https://production.dataviz.cnn.io/index/fearandgreed/graphdata',raw=await get(source,'json',{'Referer':'https://www.cnn.com/markets/fear-and-greed'}),f=raw.fear_and_greed;if(!f||!Number.isFinite(f.score)||f.score<0||f.score>100)throw Error('invalid CNN index');result.fear={...f,history:raw.fear_and_greed_historical?.data||[],source,retrievedAt:now.toISOString()}}
+ catch(e){result.errors.push({item:'CNN Fear & Greed',message:e.message});if(previous.fear)result.fear={...previous.fear,stale:true}}
+ result.coverage={usExpected:universe.size,usVerified:result.us.length,krVerified:result.kr.length,krHistory:result.kr.filter(s=>s.daily).length};
+ if(!result.us.length&&!result.macro.length)throw Error('all market sources unavailable; preserving existing dataset');
+ fs.writeFileSync(OUT,JSON.stringify(result));require('./compact.cjs');console.log(JSON.stringify({retrievedAt:result.retrievedAt,coverage:result.coverage,heatmap:result.heatmap?.leaves.length,fear:!!result.fear,errors:result.errors.slice(0,12)}));
+}
+main().catch(e=>{console.error(e);process.exit(1)});
