@@ -18,3 +18,6 @@
 - Macro-first navigation and requested index/FX/commodity/crypto cards with completed-bar sparklines.
 - Compact dated turnover/volume rankings, industry labels, trailing interest controls and historical snapshots starting with this revision.
 - Source-linked issuer summaries, conditional outlooks and recent RSS article metadata. Missing descriptions/news and unreviewed article bodies explicitly labeled.
+
+## v2.4
+- 기업 뉴스는 WSJ·Bloomberg·NYT 공개 기사 목록 우선. 확인되지 않는 경우 다른 매체 보완임을 표시. 유료 본문 미검토 명시.
