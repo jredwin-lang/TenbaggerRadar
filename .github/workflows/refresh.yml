@@ -1,7 +1,7 @@
 name: Refresh Radar
 on:
   push:
-    paths: [template.html, market-app.js, market.css, collect.cjs, compact.cjs, .github/workflows/refresh.yml]
+    paths: [template.html, refresh.cjs, market-app.js, market.css, collect.cjs, compact.cjs, .github/workflows/refresh.yml]
   schedule:
     - cron: '0 7,22 * * *'
       timezone: Asia/Seoul

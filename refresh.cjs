@@ -31,7 +31,7 @@ const scripts=[...h.matchAll(/<script>([\s\S]*?)<\/script>/g)];for(const s of sc
 fs.mkdirSync('history',{recursive:true});let history=fs.existsSync('history/index.json')?JSON.parse(fs.readFileSync('history/index.json','utf8')):[];
 const context=vm.createContext({});vm.runInContext(h.slice(h.indexOf('function mean'),h.indexOf('const esc=')),context);const signature=vm.runInContext('JSON.stringify(stocks.map(s=>[s.ticker,analyze(s).opinion,analyze(s).grade]))',context);
 const previous=fs.existsSync('signature.json')?JSON.parse(fs.readFileSync('signature.json','utf8')):null;
-if(previous!==signature){const path='history/'+now.toISOString().replace(/[:.]/g,'-')+'.html';fs.writeFileSync(path,h);history.unshift({path,label:kst+' KST · 종목/진입 의견 목록'});}
+if(previous!==signature){const path='history/'+now.toISOString().replace(/[:.]/g,'-')+'.html';fs.writeFileSync(path,h.replace(/<link rel="stylesheet" href="market\.css[^"]*">/g,'').replace(/<script src="market-app\.js[^"]*"><\/script>/g,''));history.unshift({path,label:kst+' KST · 종목/진입 의견 목록'});}
 if(!history.some(x=>x.path==='history/2026-09-14-initial.html'))history.push({path:'history/2026-09-14-initial.html',label:'최초 분석 목록 · 2026-09-14'});
 fs.writeFileSync('history/index.json',JSON.stringify(history,null,2));fs.writeFileSync('signature.json',JSON.stringify(signature));fs.writeFileSync('index.html',h);fs.writeFileSync('inputs.json',JSON.stringify(input));console.log('Refreshed verified OHLCV '+kst+' KST; daily bars '+last);
 }
