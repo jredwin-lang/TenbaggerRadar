@@ -3,7 +3,7 @@ on:
   push:
     paths: [template.html, refresh.cjs, market-app.js, market.css, collect.cjs, compact.cjs, watch-config.json, monthly-review.cjs, company-notes.json, enrich.cjs, archive-rankings.cjs, .github/workflows/refresh.yml]
   schedule:
-    - cron: '0 7,22 * * *'
+    - cron: '50 6,21 * * *'
       timezone: Asia/Seoul
   workflow_dispatch:
 permissions:

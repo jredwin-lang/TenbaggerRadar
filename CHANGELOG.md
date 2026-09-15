@@ -26,3 +26,7 @@
 - Reject provider OHLCV rows that violate price/volume invariants and retain their raw values for audit.
 - If a ticker cannot be safely refreshed, preserve its last verified bars and mark the source card rather than fail the entire scheduled deployment.
 - Show ticker-specific completed-session dates where a fallback was necessary.
+
+## v2.6
+- Schedule collections at 06:50 and 21:50 KST to target publication by 07:00 and 22:00, while avoiding top-of-hour GitHub Actions load; actual starts may still be delayed.
+- Fix dated HTML title generation during daily refresh; disclose new collection times in UI.
