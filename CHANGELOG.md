@@ -21,3 +21,8 @@
 
 ## v2.4
 - 기업 뉴스는 WSJ·Bloomberg·NYT 공개 기사 목록 우선. 확인되지 않는 경우 다른 매체 보완임을 표시. 유료 본문 미검토 명시.
+
+## v2.5
+- Reject provider OHLCV rows that violate price/volume invariants and retain their raw values for audit.
+- If a ticker cannot be safely refreshed, preserve its last verified bars and mark the source card rather than fail the entire scheduled deployment.
+- Show ticker-specific completed-session dates where a fallback was necessary.
