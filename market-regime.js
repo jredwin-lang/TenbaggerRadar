@@ -1,0 +1,39 @@
+/* Tenbagger Radar v2.7 market regime / breadth / sector rotation overlay. Facts are calculated only from market.json; no sample data. */
+(()=>{'use strict';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=(v,d=1)=>Number.isFinite(v)?v.toFixed(d):'확인 불가';
+const pct=v=>Number.isFinite(v)?`${v>=0?'+':''}${num(v)}%`:'확인 불가';
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+function metrics(s){const rows=s?.daily?.rows||s?.rows;if(!rows?.length)return null;const c=rows.map(r=>r[4]),p=c.at(-1),ma=n=>c.length>=n?avg(c.slice(-n)):null;return {p,day:c.length>1?(p/c.at(-2)-1)*100:null,w:c.length>5?(p/c.at(-6)-1)*100:null,m:c.length>21?(p/c.at(-22)-1)*100:null,ma20:ma(20),ma60:ma(60),ma120:ma(120)};}
+function tone(v){return v>0?'good':v<0?'bad':'muted'}
+function gauge(label,value,max=100){const v=Math.max(0,Math.min(max,Number(value)||0));return `<div class="mr-gauge"><span>${esc(label)}</span><b>${num(value,0)}</b><i><em style="width:${v/max*100}%"></em></i></div>`}
+function regime(data){const nas=data.macro?.find(x=>x.symbol==='^IXIC'),nm=metrics(nas),vix=metrics(data.macro?.find(x=>x.symbol==='^VIX')),dxy=metrics(data.macro?.find(x=>x.symbol==='DX-Y.NYB'));
+ const leaves=data.heatmap?.leaves?.filter(x=>Number.isFinite(x.change))||[],adv=leaves.filter(x=>x.change>0).length,dec=leaves.filter(x=>x.change<0).length,advPct=leaves.length?adv/leaves.length*100:null;
+ let trend=0;if(nm){trend+=(nm.p>nm.ma20?10:0)+(nm.p>nm.ma60?10:0)+(nm.p>nm.ma120?10:0)}
+ let breadth=Number.isFinite(advPct)?Math.max(0,Math.min(25,(advPct-25)/50*25)):null;
+ let vol=null;if(Number.isFinite(vix?.p))vol=vix.p<15?20:vix.p<20?16:vix.p<25?11:vix.p<30?6:2;
+ const fear=Number(data.fear?.score),sent=Number.isFinite(fear)?Math.max(0,Math.min(10,fear/10)):null;
+ let dollar=null;if(Number.isFinite(dxy?.day))dollar=dxy.day<=-0.5?15:dxy.day<0?12:dxy.day<0.5?8:4;
+ const parts=[trend,breadth,vol,sent,dollar],available=parts.filter(Number.isFinite),score=available.length?available.reduce((a,b)=>a+b,0)/(available.length===5?1:available.reduce((a,b)=>a+b===0?1:1,0)):null;
+ // Renormalize when a component is unavailable, preserving published maximum weights.
+ const weights=[30,25,20,10,15],raw=[trend,breadth,vol,sent,dollar],used=raw.reduce((a,v,i)=>a+(Number.isFinite(v)?weights[i]:0),0),sum=raw.reduce((a,v)=>a+(Number.isFinite(v)?v:0),0),final=used?sum/used*100:null;
+ const label=!Number.isFinite(final)?'확인 불가':final>=75?'RISK-ON':final>=60?'MODERATE RISK-ON':final>=45?'NEUTRAL':final>=30?'MODERATE RISK-OFF':'RISK-OFF';
+ return {score:final,label,trend,breadth,vol,sent,dollar,adv,dec,advPct,leaves,nm,vix,dxy,fear};}
+function sectorRows(data){const leaves=data.heatmap?.leaves?.filter(x=>Number.isFinite(x.change))||[];const map=new Map();for(const x of leaves){const k=x.sector||'기타';if(!map.has(k))map.set(k,[]);map.get(k).push(x)}return [...map].map(([name,a])=>{const w=a.reduce((s,x)=>s+(Number(x.weight)||0),0),weighted=w?a.reduce((s,x)=>s+x.change*(Number(x.weight)||0),0)/w:avg(a.map(x=>x.change));return {name,day:weighted,adv:a.filter(x=>x.change>0).length/a.length*100,n:a.length}}).sort((a,b)=>b.day-a.day)}
+function watchRotation(data){const map=new Map();for(const s of data.us||[]){if(!s.watchDefault)continue;const m=metrics(s);if(!m)continue;const k=s.category||s.sector||'기타';if(!map.has(k))map.set(k,[]);map.get(k).push(m)}return [...map].map(([name,a])=>({name,day:avg(a.map(x=>x.day).filter(Number.isFinite)),week:avg(a.map(x=>x.w).filter(Number.isFinite)),month:avg(a.map(x=>x.m).filter(Number.isFinite)),n:a.length})).sort((a,b)=>(b.week??-999)-(a.week??-999));}
+function render(data){const host=document.querySelector('#pane-macro');if(!host)return;const r=regime(data),sectors=sectorRows(data),watch=watchRotation(data);
+ const old=document.querySelector('#market-regime-v27');if(old)old.remove();const section=document.createElement('section');section.id='market-regime-v27';section.className='panel mr-panel';
+ const breadthFact=Number.isFinite(r.advPct)?`S&P 500 히트맵 기준 상승 ${r.adv} / 하락 ${r.dec} · 상승 비율 ${num(r.advPct)}%`:'S&P 500 시장폭 원자료 확인 불가';
+ const top=sectors.slice(0,4),bottom=sectors.slice(-4).reverse();
+ section.innerHTML=`<div class="section-head"><div><div class="eyebrow">MARKET REGIME · v2.7</div><h2>시장 → 자금 → 산업</h2></div><div class="mr-score"><strong>${num(r.score,0)}</strong><span>/100 · ${esc(r.label)}</span></div></div>
+ <p class="note"><b>Fact:</b> ${breadthFact}. 지수·VIX·DXY·Fear & Greed는 저장된 원자료 기준입니다. <b>Opinion:</b> Regime Score는 아래 공개 규칙의 시장환경 점수이며 수익 확률이 아닙니다.</p>
+ <div class="mr-grid">${gauge('추세',r.trend,30)}${gauge('시장폭',r.breadth,25)}${gauge('변동성',r.vol,20)}${gauge('심리',r.sent,10)}${gauge('달러',r.dollar,15)}</div>
+ <div class="mr-cols"><div><h3>Market Breadth</h3><p><b>${Number.isFinite(r.advPct)?num(r.advPct)+'%':'확인 불가'}</b> 상승 종목 비율</p><p class="note">Finviz S&P 500 히트맵 구성종목의 당일 등락으로 계산. 20·50·200일선 상회율은 현재 원자료가 없어 표시하지 않습니다.</p></div><div><h3>Sector Rotation · S&P 500</h3>${top.map(x=>`<p><span class="good">▲ ${esc(x.name)}</span> ${pct(x.day)} · 상승 ${num(x.adv,0)}%</p>`).join('')}${bottom.map(x=>`<p><span class="bad">▼ ${esc(x.name)}</span> ${pct(x.day)} · 상승 ${num(x.adv,0)}%</p>`).join('')}</div></div>
+ <h3>관심산업 모멘텀 · 1D / 5D / 21D</h3><div class="table-wrap"><table class="mr-table"><thead><tr><th>산업</th><th>종목수</th><th>1D</th><th>5D</th><th>21D</th><th>해석</th></tr></thead><tbody>${watch.map(x=>{const s=Number.isFinite(x.week)?x.week>3?'유입 강함':x.week<-3?'약화':'중립':'확인 불가';return `<tr><td>${esc(x.name)}</td><td>${x.n}</td><td class="${tone(x.day)}">${pct(x.day)}</td><td class="${tone(x.week)}">${pct(x.week)}</td><td class="${tone(x.month)}">${pct(x.month)}</td><td>${s}</td></tr>`}).join('')}</tbody></table></div>
+ <details><summary>Market Regime 산식</summary><p>추세 30점: Nasdaq 종가가 SMA20·60·120 위일 때 각각 10점. 시장폭 25점: S&P 500 상승종목 비율 25~75%를 0~25점으로 선형 환산. 변동성 20점: VIX &lt;15=20, &lt;20=16, &lt;25=11, &lt;30=6, 그 외 2. 심리 10점: CNN Fear & Greed 점수/10. 달러 15점: DXY 일간 변화가 -0.5% 이하=15, 음수=12, +0.5% 미만=8, 그 외 4. 누락 구성요소는 가용 점수로 100점 환산합니다.</p><p class="note">미 국채 2년·10년 금리는 현재 market.json에 검증된 원자료가 없어 점수에 넣지 않았습니다. 추후 검증 가능한 공급원을 연결한 뒤 별도 구성요소로 추가해야 합니다.</p></details>`;
+ host.prepend(section);document.querySelector('.workspace-intro .eyebrow')?.replaceChildren(document.createTextNode('TENBAGGER RADAR v2.7 · MARKET WORKSPACE'));
+}
+const css=document.createElement('style');css.textContent=`.mr-panel{margin-top:0}.mr-score{display:flex;align-items:baseline;gap:6px}.mr-score strong{font-size:40px;color:var(--gold)}.mr-score span{color:var(--muted)}.mr-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0}.mr-gauge{background:#0c1523;border:1px solid var(--line);border-radius:12px;padding:12px}.mr-gauge span,.mr-gauge b{display:block}.mr-gauge b{font-size:22px}.mr-gauge i{display:block;height:5px;background:#223047;border-radius:5px;overflow:hidden;margin-top:8px}.mr-gauge em{display:block;height:100%;background:var(--blue)}.mr-cols{display:grid;grid-template-columns:1fr 2fr;gap:12px;margin:14px 0}.mr-cols>div{background:#0c1523;border:1px solid var(--line);border-radius:12px;padding:14px}.mr-cols h3{font-size:16px}.mr-table{min-width:680px}@media(max-width:800px){.mr-grid{grid-template-columns:1fr 1fr}.mr-cols{grid-template-columns:1fr}}`;document.head.append(css);
+function boot(){fetch('market.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject(new Error('market.json'))).then(data=>{const tryRender=()=>{if(document.querySelector('#pane-macro'))render(data);else setTimeout(tryRender,120)};tryRender()}).catch(()=>{});}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
