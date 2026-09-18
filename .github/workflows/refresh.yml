@@ -1,7 +1,7 @@
 name: Refresh Radar
 on:
   push:
-    paths: [template.html, refresh.cjs, market-app.js, market-app-core.js, market-regime.js, market.css, VERSION, collect.cjs, compact.cjs, tests/regression.cjs, watch-config.json, monthly-review.cjs, company-notes.json, enrich.cjs, archive-rankings.cjs, .github/workflows/refresh.yml]
+    paths: [template.html, refresh.cjs, market-app.js, market-app-core.js, market-regime.js, market.css, VERSION, collect.cjs, compact.cjs, tests/regression.cjs, tests/browser-smoke.cjs, watch-config.json, monthly-review.cjs, company-notes.json, enrich.cjs, archive-rankings.cjs, .github/workflows/refresh.yml]
   schedule:
     - cron: '50 6,21 * * *'
       timezone: Asia/Seoul
@@ -31,6 +31,11 @@ jobs:
         run: node enrich.cjs
       - name: Verify calculations and regression cases
         run: node tests/regression.cjs
+      - name: Verify mobile layout and tab navigation
+        run: |
+          npm install --no-save --package-lock=false playwright@1.62.1
+          npx playwright install --with-deps chromium
+          node tests/browser-smoke.cjs
       - name: Archive dated rankings
         run: node archive-rankings.cjs
       - name: Preserve history and refreshed inputs
