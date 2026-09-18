@@ -1,6 +1,8 @@
 /* Calculation results are generated from complete downloaded OHLCV; chart windows alone are shortened. */
-const compactFs=require('fs'),compactVm=require('vm'),app=compactFs.readFileSync('market-app.js','utf8');
-const calcSource=app.slice(app.indexOf('function calc(s)'),app.indexOf('function state(m)'));
+const compactFs=require('fs'),compactVm=require('vm'),app=compactFs.readFileSync('market-app-core.js','utf8');
+const calcStart=app.indexOf('function calc(s)'),calcEnd=app.indexOf('function state(m)');
+if(calcStart<0||calcEnd<=calcStart)throw new Error('calc(s) source not found in market-app-core.js');
+const calcSource=app.slice(calcStart,calcEnd);
 const compactContext=compactVm.createContext({});compactVm.runInContext(calcSource,compactContext);
 const full=JSON.parse(compactFs.readFileSync('market.json','utf8'));
 for(const stock of [...full.us,...full.macro,...full.kr.filter(s=>s.daily)]){
