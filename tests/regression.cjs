@@ -32,3 +32,8 @@ for(const p of ['template.html','market-app.js','market-app-core.js','market-reg
  assert.ok(versions.every(v=>v===version),p+' has stale version labels');
 }
 console.log(JSON.stringify({status:'passed',historicalCalculationWindows:windows,radarStocks:full.length,note:'Calculation replay only; this is not a WATCH15/TOP5 return backtest.'}));
+
+for(const p of ['template.html','index.html']){
+ const versions=[...fs.readFileSync(p,'utf8').matchAll(/\?v=(2\.\d+)/g)].map(x=>x[1]);
+ assert.ok(versions.length>0&&versions.every(v=>v===version),p+' has stale asset cache keys');
+}

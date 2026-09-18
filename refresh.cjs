@@ -14,7 +14,7 @@ Object.assign(stock,{rows:clean,rejectedRows,refreshError:null,quotePrice:clean.
 }
 const version=fs.readFileSync('VERSION','utf8').trim();
 if(!/^\d+\.\d+$/.test(version))throw Error('Invalid VERSION');
-let h=fs.readFileSync('template.html','utf8').replace(/v2\.\d+/g,'v'+version);
+let h=fs.readFileSync('template.html','utf8').replace(/v2\.\d+/g,'v'+version).replace(/\?v=2\.\d+/g,'?v='+version);
 const date=kst.slice(0,10),last=input.data.map(s=>s.rows.at(-1)[0]).sort().at(-1);
 if(input.data.some(s=>s.rows.at(-1)[0]!==last))console.warn('Some radar tickers retain older verified sessions; check each source card');
 h=h.replace(/Tenbagger Radar v2\.\d+ · \d{4}-\d{2}-\d{2}/g,'Tenbagger Radar v'+version+' · '+date).replace('정규장 종가 · USD / meta','정규장 종가 · USD / quote.close');
