@@ -1,7 +1,7 @@
 name: Refresh Radar
 on:
   push:
-    paths: [template.html, refresh.cjs, market-app.js, market.css, collect.cjs, compact.cjs, watch-config.json, monthly-review.cjs, company-notes.json, enrich.cjs, archive-rankings.cjs, .github/workflows/refresh.yml]
+    paths: [template.html, refresh.cjs, market-app.js, market-app-core.js, market-regime.js, market.css, VERSION, collect.cjs, compact.cjs, watch-config.json, monthly-review.cjs, company-notes.json, enrich.cjs, archive-rankings.cjs, .github/workflows/refresh.yml]
   schedule:
     - cron: '50 6,21 * * *'
       timezone: Asia/Seoul
@@ -42,7 +42,7 @@ jobs:
       - name: Prepare public site
         run: |
           mkdir _site
-          cp index.html .nojekyll market.json market-app.js market.css company-notes.json _site/
+          cp index.html .nojekyll market.json market-app.js market-app-core.js market-regime.js market.css company-notes.json VERSION _site/
           cp -r ranking-history _site/
           if [ -f monthly-review.json ]; then cp monthly-review.json _site/; fi
           if [ -d monthly-history ]; then cp -r monthly-history _site/; fi
