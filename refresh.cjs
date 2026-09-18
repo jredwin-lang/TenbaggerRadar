@@ -12,10 +12,12 @@ const rejectedRows=rows.filter(r=>!valid(r)),clean=rows.filter(valid);
 if(clean.length<252||(Date.parse(nyDate)-Date.parse(clean.at(-1)?.[0]||'1970-01-01'))/86400000>7){stock.refreshError=stock.ticker+' source invalid/stale; retained last verified OHLCV';stock.rejectedRows=rejectedRows;stock.refreshCheckedAt=now.toISOString();continue}
 Object.assign(stock,{rows:clean,rejectedRows,refreshError:null,quotePrice:clean.at(-1)[4],quoteVolume:clean.at(-1)[5],quoteTime:raw.meta.regularMarketTime,downloadedAt:now.toISOString(),splits:raw.events?.splits||{},crossQuote:{close:null,volume:null}});
 }
-let h=fs.readFileSync('template.html','utf8');
+const version=fs.readFileSync('VERSION','utf8').trim();
+if(!/^\d+\.\d+$/.test(version))throw Error('Invalid VERSION');
+let h=fs.readFileSync('template.html','utf8').replace(/v2\.\d+/g,'v'+version);
 const date=kst.slice(0,10),last=input.data.map(s=>s.rows.at(-1)[0]).sort().at(-1);
 if(input.data.some(s=>s.rows.at(-1)[0]!==last))console.warn('Some radar tickers retain older verified sessions; check each source card');
-h=h.replace(/Tenbagger Radar v2\.6 · \d{4}-\d{2}-\d{2}/g,'Tenbagger Radar v2.6 · '+date).replace('정규장 종가 · USD / meta','정규장 종가 · USD / quote.close');
+h=h.replace(/Tenbagger Radar v2\.\d+ · \d{4}-\d{2}-\d{2}/g,'Tenbagger Radar v'+version+' · '+date).replace('정규장 종가 · USD / meta','정규장 종가 · USD / quote.close');
 h=h.replace('/*__INPUTS__*/','const stocks='+JSON.stringify(input.data)+';const korean='+JSON.stringify(input.kr)+';');
 h=h.replace(/2026-09-14 KST/g,date+' KST').replace('2026-09-11 16:00 EDT / 2026-09-12 05:00 KST 정규장 종가',last+' 미국 정규장 완료 일봉');
 h=h.replace('미국 정규장 개장 전이며 당일 프리마켓 시세는 반영하지 않음.','실행시각 '+kst+' KST. 완료된 정규장 일봉만 반영하며 장중·프리마켓 시세는 포함하지 않음.');

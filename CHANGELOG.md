@@ -5,7 +5,7 @@
 - Korean default industry watchlists including power, auto, robots, space and defense.
 - Common sourced candle/volume/MA chart, no B on watchlist details. Full-series moving averages computed before compacting.
 - Monthly SEC collection with explicit failure status and archived records; existing desktop heartbeat extended with monthly source-based company research. Original Investment scores unchanged until supported research.
-- Data updates do not increment the version; completed code revisions increment by 0.1.
+- Data updates do not increment the version; minor code revisions increment by 0.01.
 
 # v2.2
 
@@ -30,3 +30,9 @@
 ## v2.6
 - Schedule collections at 06:50 and 21:50 KST to target publication by 07:00 and 22:00, while avoiding top-of-hour GitHub Actions load; actual starts may still be delayed.
 - Fix dated HTML title generation during daily refresh; disclose new collection times in UI.
+
+## v2.62
+- Synchronize version labels and cache keys across generated HTML and modules.
+- Preserve Market Regime after tab changes and sector filtering; reuse the core market fetch.
+- Exclude missing sentiment and insufficient trend history from the score denominator.
+- Keep mobile macro and regime tiles in three columns.
