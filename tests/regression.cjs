@@ -27,7 +27,7 @@ for(const s of [...input.us,...input.macro,...input.kr.filter(x=>x.daily)]){
  assert.equal(d.metrics.price,d.rows.at(-1)[4]);
 }
 const version=fs.readFileSync('VERSION','utf8').trim();
-for(const p of ['template.html','market-app.js','market-app-core.js','market-regime.js']){
+for(const p of ['template.html','market-app.js','market-app-core.js','market-regime.js','market-brief.js']){
  const versions=[...fs.readFileSync(p,'utf8').matchAll(/v(2\.\d+)/g)].map(x=>x[1]);
  assert.ok(versions.every(v=>v===version),p+' has stale version labels');
 }
