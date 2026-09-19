@@ -23,7 +23,7 @@ function selectNews(data){
 function build(data){
  const m=s=>daily(data.macro?.find(x=>x.symbol===s)),nas=m('^IXIC'),sp=m('^GSPC'),dow=m('^DJI'),rut=m('^RUT'),vix=m('^VIX'),dollar=m('DX-Y.NYB'),oil=m('CL=F'),gold=m('GC=F');
  const leaves=data.heatmap?.leaves?.filter(x=>Number.isFinite(x.change))||[],adv=leaves.filter(x=>x.change>0).length,dec=leaves.filter(x=>x.change<0).length;
- const news=selectNews(data),themes=topics.map(t=>({...t,article:news.items.find(a=>t.test(a.title))})).filter(t=>t.article);
+ const news=selectNews(data),themes=topics.map(t=>({...t,article:news.items.find(a=>t.test.test(a.title))})).filter(t=>t.article);
  const sentences=[
  {kind:'Fact',text:(nas.date||'거래일 확인 불가')+' 미국 완료 일봉에서 S&P 500 '+pct(sp.change)+', 나스닥 '+pct(nas.change)+', 다우 '+pct(dow.change)+', 러셀2000 '+pct(rut.change)+'로 집계됐습니다.',href:'https://finance.yahoo.com/markets/us/',label:'지수 출처'},
  {kind:'Fact → Opinion',text:leaves.length?'Finviz 조회 스냅샷은 상승 '+adv+'개·하락 '+dec+'개이며, '+(Number.isFinite(nas.change)&&nas.change>0&&adv<dec?'나스닥 상승과 종목 전반의 약세가 엇갈려 대형주 중심의 상승 가능성을 점검해야 합니다':adv>dec?'상승 종목이 더 많지만 한 차례의 확산만으로 상승 추세 지속을 확정하기는 어렵습니다':'하락 종목이 더 많아 개별 종목의 추세 회복을 추가 확인해야 합니다')+'.':'상승·하락 종목 원자료가 없어 시장 전반의 참여 정도는 확인 불가입니다.',href:'https://finviz.com/map.ashx?t=sp500',label:'시장폭 출처'},
@@ -38,7 +38,7 @@ function render(data){
  const b=build(data),section=document.createElement('section');section.id='morning-brief';section.className='panel morning-brief';
  const windowStart=Number.isFinite(b.news.cutoff)?new Date(b.news.cutoff-24*3600000).toISOString():null;
  const cards=b.news.items.map(a=>{
- const topic=topics.find(t=>t.test(a.title));
+ const topic=topics.find(t=>t.test.test(a.title));
  return '<article class="brief-article"><small>'+esc(a.publisher)+' · '+esc(kst(a.publishedAt))+'</small><h4>'+link(a.url,a.title)+'</h4><p>'+esc(topic?topic.name+' 관련 공개 제목 · '+topic.check:'미국 시장 관련 공개 제목 · 본문에서 실제 근거 확인')+'</p><span>공개 제목 확인 · 본문 미검토</span></article>';
  }).join('');
  const risks=b.themes.slice(0,3).map(t=>'<li>'+link(t.article.url,kst(t.article.publishedAt)+' · '+t.name)+'<p>'+esc(t.risk)+'.</p></li>').join('');
