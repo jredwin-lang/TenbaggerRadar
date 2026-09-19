@@ -15,19 +15,19 @@ const server=http.createServer((req,res)=>{
    const page=await browser.newPage({viewport:{width,height:900}}),errors=[];
    page.on('pageerror',e=>errors.push(e.message));
    await page.goto('http://127.0.0.1:'+server.address().port);
-   await page.locator('.mr-panel').waitFor();
-   assert.equal(await page.locator('.workspace-intro .eyebrow').innerText(),'TENBAGGER RADAR v2.64 · MARKET WORKSPACE');
-   assert.ok((await page.locator('script[src]').evaluateAll(nodes=>nodes.map(n=>n.src))).every(src=>new URL(src).searchParams.get('v')==='2.64'),'Every module must have the new cache key');
-   const layout=await page.evaluate(()=>({macro:getComputedStyle(document.querySelector('.macro-grid')).gridTemplateColumns.split(' ').length,regime:getComputedStyle(document.querySelector('.mr-grid')).gridTemplateColumns.split(' ').length,overflow:document.documentElement.scrollWidth>innerWidth+1}));
-   if(width<=430){assert.equal(layout.macro,3);assert.equal(layout.regime,3)}
+   await page.locator('#morning-brief').waitFor();
+   assert.equal(await page.locator('.workspace-intro .eyebrow').innerText(),'TENBAGGER RADAR v2.65 · MARKET WORKSPACE');
+   assert.ok((await page.locator('script[src]').evaluateAll(nodes=>nodes.map(n=>n.src))).every(src=>new URL(src).searchParams.get('v')==='2.65'),'Every module must have the new cache key');
+   const layout=await page.evaluate(()=>({macro:getComputedStyle(document.querySelector('.macro-grid')).gridTemplateColumns.split(' ').length,overflow:document.documentElement.scrollWidth>innerWidth+1}));
+   if(width<=430){assert.equal(layout.macro,3)}
    assert.equal(layout.overflow,false,JSON.stringify({width,layout}));
    await page.getByRole('button',{name:'텐배거 레이더',exact:true}).click();
    await page.getByRole('button',{name:'매크로·히트맵',exact:true}).click();
-   assert.equal(await page.locator('.mr-panel').count(),1);
+   assert.equal(await page.locator('#morning-brief').count(),1);
    await page.getByRole('button',{name:'투자 계산기',exact:true}).click();
    await page.getByRole('button',{name:'매크로·히트맵',exact:true}).click();
-   assert.equal(await page.locator('.mr-panel').count(),1);
-   assert.deepEqual(errors,[]);
+   assert.equal(await page.locator('#morning-brief').count(),1);
+   assert.equal(await page.locator('#market-regime-v27').count(),0);assert.equal(await page.locator('.brief-narrative > p').count(),5);assert.equal(await page.locator('#sector-summary').count(),1);assert.deepEqual(errors,[]);
    console.log(JSON.stringify({width,...layout,status:'passed'}));await page.close();
   }
  }finally{await browser.close()}

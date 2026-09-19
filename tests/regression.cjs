@@ -1,13 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const core=fs.readFileSync('market-app-core.js','utf8');
 const calc=vm.runInNewContext(core.slice(core.indexOf('function calc(s)'),core.indexOf('function state(m)'))+';calc');
-const source=fs.readFileSync('market-regime.js','utf8');
-const regime=vm.runInNewContext(source.slice(source.indexOf('const esc='),source.indexOf('const css='))+';regime');
-assert.equal(regime({}).score,null,'Absent market data must not produce a score');
-assert.equal(regime({fear:{score:null}}).score,null,'Null sentiment must remain unavailable');
-assert.equal(regime({fear:{score:0}}).score,0,'A real zero sentiment is valid');
-assert.equal(regime({fear:{score:100}}).score,100);
-assert.equal(regime({macro:[{symbol:'^IXIC',rows:[['2026-01-01',1,1,1,1,1]]}]}).trend,null);
 const full=JSON.parse(fs.readFileSync('inputs.json','utf8')).data;
 let windows=0;
 for(const s of full){
