@@ -13,9 +13,9 @@ const server=http.createServer((req,res)=>{
  try{
   for(const width of [360,390,430,1366]){
    const page=await browser.newPage({viewport:{width,height:900}}),errors=[];
-   page.on('pageerror',e=>errors.push(e.message));
+   page.on('pageerror',e=>errors.push(e.stack||e.message));page.on('console',m=>{if(m.type()==='error')console.error('BROWSER:',m.text())});
    await page.goto('http://127.0.0.1:'+server.address().port);
-   await page.locator('#morning-brief').waitFor();
+   await page.locator('#morning-brief').waitFor().catch(e=>{console.error('PAGE ERRORS:',JSON.stringify(errors));throw e});
    assert.equal(await page.locator('.workspace-intro .eyebrow').innerText(),'TENBAGGER RADAR v2.65 · MARKET WORKSPACE');
    assert.ok((await page.locator('script[src]').evaluateAll(nodes=>nodes.map(n=>n.src))).every(src=>new URL(src).searchParams.get('v')==='2.65'),'Every module must have the new cache key');
    const layout=await page.evaluate(()=>({macro:getComputedStyle(document.querySelector('.macro-grid')).gridTemplateColumns.split(' ').length,overflow:document.documentElement.scrollWidth>innerWidth+1}));
