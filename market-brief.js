@@ -1,4 +1,4 @@
-/* Tenbagger Radar v2.63 morning brief. Facts come only from market.json; interpretations use disclosed rules. */
+/* Tenbagger Radar v2.64 morning brief. Facts come only from market.json; interpretations use disclosed rules. */
 (()=>{'use strict';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const n=(v,d=1)=>Number.isFinite(v)?v.toFixed(d):'확인 불가',p=v=>Number.isFinite(v)?`${v>=0?'+':''}${n(v)}%`:'확인 불가';
@@ -17,7 +17,7 @@ function brief(data){
 }
 function render(data){const host=document.querySelector('#pane-macro');if(!host)return;document.querySelector('#morning-brief')?.remove();const b=brief(data),s=document.createElement('section');s.id='morning-brief';s.className='panel morning-brief';
  const facts=[`S&P 500 ${p(b.sp)}`,`다우 ${p(b.dow)}`,`나스닥 ${p(b.nas)}`,`러셀2000 ${p(b.rut)}`,Number.isFinite(b.breadth)?`S&P 500 시장폭 상승 ${b.adv} / 하락 ${b.dec}`:'S&P 500 시장폭 확인 불가',`VIX 일간 ${p(b.vd)}`,`달러 ${p(b.dxy)}`,`WTI ${p(b.oil)}`,`금 ${p(b.gold)}`];
- s.innerHTML=`<div class="section-head"><div><div class="eyebrow">US MARKET MORNING BRIEF · v2.63</div><h2>미국증시 주요 요약</h2></div><span class="brief-regime">${esc(b.regime)}</span></div>
+ s.innerHTML=`<div class="section-head"><div><div class="eyebrow">US MARKET MORNING BRIEF · v2.64</div><h2>미국증시 주요 요약</h2></div><span class="brief-regime">${esc(b.regime)}</span></div>
  <p class="brief-time">완료 일봉 ${esc(b.session)} · 수집 ${esc(new Date(data.retrievedAt).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'}))} KST</p>
  <div class="brief-facts">${facts.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
  <div class="brief-columns"><div><h3>Fact</h3><p>${esc(b.signals.join(' ')||'검증 가능한 시장 신호가 부족합니다.')}</p><p>강세 섹터: <b>${esc(b.top?.name||'확인 불가')} ${p(b.top?.v)}</b> · 약세 섹터: <b>${esc(b.bottom?.name||'확인 불가')} ${p(b.bottom?.v)}</b></p></div><div><h3>시장 해석 · Opinion</h3><p><b>${esc(b.regime)}</b>. 지수 방향, 상승 종목 비율, VIX를 함께 적용한 공개 규칙의 해석입니다. 동시 움직임만으로 원인을 확정하지 않습니다.</p></div></div>
