@@ -3,4 +3,4 @@
 const css=document.createElement('link');css.rel='stylesheet';css.href='market.css?v='+VERSION;document.head.appendChild(css);
 const load=src=>new Promise((ok,fail)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=fail;document.head.appendChild(s)});
 const stamp=()=>{document.title=document.title.replace(/v2\.6\d*/i,'v'+VERSION);document.querySelectorAll('.workspace-intro .eyebrow,#market-regime-v27 .eyebrow').forEach(el=>{el.textContent=el.textContent.replace(/v2\.(?:6|7)\d*/i,'v'+VERSION)});document.querySelectorAll('.tag').forEach(el=>{if(/^v2\.(?:6|7)/i.test(el.textContent))el.textContent=el.textContent.replace(/v2\.(?:6|7)\d*/i,'v'+VERSION)});};
-load('market-app-core.js?v='+VERSION).then(()=>load('market-brief.js?v='+VERSION+'&rev=2')).then(()=>{stamp();setTimeout(stamp,300);setTimeout(stamp,1200)}).catch(e=>console.error('Tenbagger Radar module load failed',e));})();
+load('market-app-core.js?v='+VERSION).then(()=>load('market-brief.js?v='+VERSION+'&rev=3')).then(()=>{stamp();setTimeout(stamp,300);setTimeout(stamp,1200)}).catch(e=>console.error('Tenbagger Radar module load failed',e));})();
