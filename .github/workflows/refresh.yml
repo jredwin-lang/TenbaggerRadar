@@ -1,7 +1,7 @@
 name: Refresh Radar
 on:
   push:
-    paths: [template.html, refresh.cjs, market-app.js, market-app-core.js, market-regime.js, market.css, VERSION, collect.cjs, compact.cjs, tests/regression.cjs, tests/browser-smoke.cjs, watch-config.json, monthly-review.cjs, company-notes.json, enrich.cjs, archive-rankings.cjs, .github/workflows/refresh.yml]
+    paths: [template.html, refresh.cjs, market-app.js, market-app-core.js, market-regime.js, market-brief.js, market.css, VERSION, collect.cjs, compact.cjs, tests/regression.cjs, tests/browser-smoke.cjs, watch-config.json, monthly-review.cjs, company-notes.json, enrich.cjs, archive-rankings.cjs, .github/workflows/refresh.yml]
   schedule:
     - cron: '50 6,21 * * *'
       timezone: Asia/Seoul
