@@ -49,7 +49,7 @@ jobs:
       - name: Prepare public site
         run: |
           mkdir _site
-          cp index.html .nojekyll market.json market-app.js market-app-core.js market-regime.js market.css company-notes.json VERSION _site/
+          cp index.html .nojekyll market.json market-app.js market-app-core.js market-regime.js market-brief.js market.css company-notes.json VERSION _site/
           cp -r ranking-history _site/
           if [ -f monthly-review.json ]; then cp monthly-review.json _site/; fi
           if [ -d monthly-history ]; then cp -r monthly-history _site/; fi

@@ -36,3 +36,10 @@
 - Preserve Market Regime after tab changes and sector filtering; reuse the core market fetch.
 - Exclude missing sentiment and insufficient trend history from the score denominator.
 - Keep mobile macro and regime tiles in three columns.
+
+
+## v2.63
+- 매크로 첫 화면에 실제 시장 수치와 공개 기사 메타데이터를 종합한 미국증시 아침 브리핑 추가
+- S&P 500·다우·러셀2000 수집 및 시장 폭·VIX·달러·원자재·섹터 교차 해석
+- Fact와 Opinion, 상승·하락 시나리오, 출처와 유료 본문 미검토 범위를 분리 표시
+- WSJ·Bloomberg·NYT 우선, 확인 불가 시 Reuters·FT·CNBC로 보완하며 원인 단정 금지

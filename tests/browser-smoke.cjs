@@ -16,8 +16,8 @@ const server=http.createServer((req,res)=>{
    page.on('pageerror',e=>errors.push(e.message));
    await page.goto('http://127.0.0.1:'+server.address().port);
    await page.locator('.mr-panel').waitFor();
-   assert.equal(await page.locator('.workspace-intro .eyebrow').innerText(),'TENBAGGER RADAR v2.62 · MARKET WORKSPACE');
-   assert.ok((await page.locator('script[src]').evaluateAll(nodes=>nodes.map(n=>n.src))).every(src=>new URL(src).searchParams.get('v')==='2.62'),'Every module must have the new cache key');
+   assert.equal(await page.locator('.workspace-intro .eyebrow').innerText(),'TENBAGGER RADAR v2.63 · MARKET WORKSPACE');
+   assert.ok((await page.locator('script[src]').evaluateAll(nodes=>nodes.map(n=>n.src))).every(src=>new URL(src).searchParams.get('v')==='2.63'),'Every module must have the new cache key');
    const layout=await page.evaluate(()=>({macro:getComputedStyle(document.querySelector('.macro-grid')).gridTemplateColumns.split(' ').length,regime:getComputedStyle(document.querySelector('.mr-grid')).gridTemplateColumns.split(' ').length,overflow:document.documentElement.scrollWidth>innerWidth+1}));
    if(width<=430){assert.equal(layout.macro,3);assert.equal(layout.regime,3)}
    assert.equal(layout.overflow,false,JSON.stringify({width,layout}));

@@ -1,0 +1,29 @@
+/* Tenbagger Radar v2.63 morning brief. Facts come only from market.json; interpretations use disclosed rules. */
+(()=>{'use strict';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const n=(v,d=1)=>Number.isFinite(v)?v.toFixed(d):'확인 불가',p=v=>Number.isFinite(v)?`${v>=0?'+':''}${n(v)}%`:'확인 불가';
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+function day(s){const r=s?.daily?.rows||s?.rows;if(r?.length>1)return (r.at(-1)[4]/r.at(-2)[4]-1)*100;return Number.isFinite(s?.quote?.change)?s.quote.change:null}
+function brief(data){
+ const macro=s=>data.macro?.find(x=>x.symbol===s),sp=day(macro('^GSPC')),dow=day(macro('^DJI')),rut=day(macro('^RUT')),nas=day(macro('^IXIC')),vix=macro('^VIX'),vd=day(vix),dxy=day(macro('DX-Y.NYB')),oil=day(macro('CL=F')),gold=day(macro('GC=F'));
+ const leaves=data.heatmap?.leaves?.filter(x=>Number.isFinite(x.change))||[],adv=leaves.filter(x=>x.change>0).length,dec=leaves.filter(x=>x.change<0).length,breadth=leaves.length?adv/leaves.length*100:null;
+ const sm=new Map();for(const x of leaves){const k=x.sector||'기타';if(!sm.has(k))sm.set(k,[]);sm.get(k).push(x)}const sectors=[...sm].map(([name,a])=>{const w=a.reduce((s,x)=>s+(Number(x.weight)||0),0);return {name,v:w?a.reduce((s,x)=>s+x.change*(Number(x.weight)||0),0)/w:avg(a.map(x=>x.change))}}).sort((a,b)=>b.v-a.v);
+ let regime='혼조';if(Number.isFinite(nas)&&Number.isFinite(breadth)&&Number.isFinite(vd)){if(nas>0&&breadth>=55&&vd<=0)regime='위험선호 우세';else if(nas<0&&breadth<=45&&vd>0)regime='위험회피 우세';else if(breadth>=55)regime='종목 확산 우세';else if(breadth<=45)regime='상승 참여 제한'}
+ const signals=[];if(Number.isFinite(breadth))signals.push(breadth>=60?'상승 참여가 넓습니다':breadth<=40?'하락 종목 비중이 큽니다':'상승·하락 종목이 엇갈립니다');if(Number.isFinite(vd))signals.push(vd>5?'VIX가 뚜렷하게 상승했습니다':vd<-5?'VIX가 뚜렷하게 하락했습니다':'VIX 변화는 제한적입니다');if(Number.isFinite(dxy)&&Math.abs(dxy)>=.5)signals.push(dxy>0?'달러 강세가 동시에 관찰됩니다':'달러 약세가 동시에 관찰됩니다');if(Number.isFinite(oil)&&Math.abs(oil)>=2)signals.push(oil>0?'유가 상승이 동시에 관찰됩니다':'유가 하락이 동시에 관찰됩니다');
+ const top=sectors[0],bottom=sectors.at(-1),articles=(data.enrichment?.morningNews||[]).slice(0,5),session=macro('^IXIC')?.rows?.at(-1)?.[0]||macro('^IXIC')?.daily?.rows?.at(-1)?.[0]||'완료 일봉 확인 불가';
+ const upside=regime.includes('위험선호')||regime.includes('확산')?'시장 폭과 변동성 안정이 이어지면 상승 흐름의 지속 가능성이 높아집니다.':'나스닥 회복과 상승 종목 비율 확대, VIX 하락이 함께 확인돼야 반등 신뢰도가 높아집니다.';
+ const downside=regime.includes('위험회피')||regime.includes('제한')?'지수 약세와 VIX 상승이 계속되면 추격 진입보다 위험 한도 관리가 우선입니다.':'상승 종목 비율이 줄거나 VIX·달러가 함께 오르면 현재의 위험선호 해석을 재검토합니다.';
+ return {nas,vd,dxy,oil,gold,adv,dec,breadth,top,bottom,regime,signals,articles,session,upside,downside};
+}
+function render(data){const host=document.querySelector('#pane-macro');if(!host)return;document.querySelector('#morning-brief')?.remove();const b=brief(data),s=document.createElement('section');s.id='morning-brief';s.className='panel morning-brief';
+ const facts=[`나스닥 ${p(b.nas)}`,`S&P 500 히트맵 상승 ${b.adv} / 하락 ${b.dec}`,`VIX 일간 ${p(b.vd)}`,`달러 ${p(b.dxy)}`,`WTI ${p(b.oil)}`,`금 ${p(b.gold)}`];
+ s.innerHTML=`<div class="section-head"><div><div class="eyebrow">US MARKET MORNING BRIEF · v2.63</div><h2>미국증시 주요 요약</h2></div><span class="brief-regime">${esc(b.regime)}</span></div>
+ <p class="brief-time">완료 일봉 ${esc(b.session)} · 수집 ${esc(new Date(data.retrievedAt).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'}))} KST</p>
+ <div class="brief-facts">${facts.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
+ <div class="brief-columns"><div><h3>Fact</h3><p>${esc(b.signals.join(' '))}</p><p>강세 섹터: <b>${esc(b.top?.name||'확인 불가')} ${p(b.top?.v)}</b> · 약세 섹터: <b>${esc(b.bottom?.name||'확인 불가')} ${p(b.bottom?.v)}</b></p></div><div><h3>시장 해석 · Opinion</h3><p><b>${esc(b.regime)}</b>. 지수 방향, 상승 종목 비율, VIX를 함께 적용한 공개 규칙의 해석입니다. 동시 움직임만으로 원인을 확정하지 않습니다.</p></div></div>
+ <div class="brief-scenarios"><p><b>상승 시나리오:</b> ${esc(b.upside)}</p><p><b>하락 시나리오:</b> ${esc(b.downside)}</p></div>
+ <h3>주요 경제 전문지 기사</h3>${b.articles.length?b.articles.map(a=>`<p class="brief-news"><a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.title)}</a><small>${esc(a.publisher||'매체 미확인')} · ${esc(a.publishedAt||'시각 미확인')}</small></p>`).join(''):'<p>WSJ·Bloomberg·NYT의 최근 공개 기사 메타데이터를 확인하지 못했습니다.</p>'}
+ <details><summary>해석 기준·출처·한계</summary><p>Fact: Yahoo 완료 일봉과 매크로 자료, Finviz S&P 500 히트맵, RSS 기사 제목·발행시각. Opinion: 나스닥 방향·히트맵 상승비율·VIX 방향을 조합합니다. 경제 전문지는 WSJ·Bloomberg·NYT 우선이며 없을 때 Reuters·Financial Times·CNBC 공개 기사로 보완합니다.</p><p>기사 제목은 원문 메타데이터이며 유료 본문을 우회하거나 미검토 본문을 요약하지 않습니다. 기사와 시장 움직임의 인과관계는 확정하지 않습니다. 이 브리핑은 투자 권유나 수익 확률이 아닙니다.</p></details>`;host.prepend(s)}
+const css=document.createElement('style');css.textContent=`.morning-brief{border-color:#365f91}.brief-regime{padding:8px 12px;border-radius:999px;background:#18345c;color:#9bc3ff;font-weight:800}.brief-time{color:var(--muted);font-size:13px}.brief-facts{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.brief-facts span{background:#0b1728;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px}.brief-columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}.brief-columns>div,.brief-scenarios{background:#0c1523;border:1px solid var(--line);border-radius:12px;padding:14px}.brief-news{margin:8px 0}.brief-news small{display:block;color:var(--muted)}@media(max-width:700px){.brief-columns{grid-template-columns:1fr}.brief-facts{display:grid;grid-template-columns:repeat(2,1fr)}}`;document.head.append(css);
+document.addEventListener('radar:macro-render',e=>render(e.detail));if(window.radarMarketData)render(window.radarMarketData);
+})();
