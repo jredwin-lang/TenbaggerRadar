@@ -20,7 +20,7 @@ for(const s of [...input.us,...input.macro,...input.kr.filter(x=>x.daily)]){
  assert.equal(d.metrics.price,d.rows.at(-1)[4]);
 }
 const version=fs.readFileSync('VERSION','utf8').trim();
-for(const p of ['template.html','market-app.js','market-app-core.js','market-regime.js','market-brief.js']){
+for(const p of ['template.html','market-app.js','market-app-core.js','market-regime.js','market-brief.js','market-research.js']){
  const versions=[...fs.readFileSync(p,'utf8').matchAll(/v(2\.\d+)/g)].map(x=>x[1]);
  assert.ok(versions.every(v=>v===version),p+' has stale version labels');
 }
@@ -30,3 +30,13 @@ for(const p of ['template.html','index.html']){
  const versions=[...fs.readFileSync(p,'utf8').matchAll(/\?v=(2\.\d+)/g)].map(x=>x[1]);
  assert.ok(versions.length>0&&versions.every(v=>v===version),p+' has stale asset cache keys');
 }
+
+const review=JSON.parse(fs.readFileSync('research-review.json','utf8'));
+assert.equal(new Set(review.themes.map(t=>t.id)).size,6);
+assert.ok(review.reviewAfter>review.asOf);
+for(const t of review.themes){
+ assert.ok(t.checks.length && t.invalidate && t.evidence);
+ if(t.status==='공식 원문 확인')assert.ok(t.sources.some(s=>s.type==='primary'));
+ for(const s of t.sources){assert.equal(new URL(s.url).protocol,'https:');assert.ok(s.date<=review.asOf)}
+}
+console.log(JSON.stringify({researchThemes:review.themes.length,status:'passed'}));

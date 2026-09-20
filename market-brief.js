@@ -43,7 +43,7 @@ function render(data){
  }).join('');
  const risks=b.themes.slice(0,3).map(t=>'<li>'+link(t.article.url,kst(t.article.publishedAt)+' · '+t.name)+'<p>'+esc(t.risk)+'.</p></li>').join('');
  const checks=b.themes.slice(0,3).map(t=>'<li>'+esc(t.check)+' · '+link(t.article.url,'발행 '+kst(t.article.publishedAt))+'</li>').join('');
- section.innerHTML='<div class="section-head"><div><div class="eyebrow">US MARKET BRIEF · v2.65</div><h2>미국증시 주요 요약</h2></div></div><p class="brief-time">미국 거래일 '+esc(b.nas.date||'확인 불가')+' · 자료 수집 '+esc(kst(data.retrievedAt))+'</p>'+
+ section.innerHTML='<div class="section-head"><div><div class="eyebrow">US MARKET BRIEF · v2.66</div><h2>미국증시 주요 요약</h2></div></div><p class="brief-time">미국 거래일 '+esc(b.nas.date||'확인 불가')+' · 자료 수집 '+esc(kst(data.retrievedAt))+'</p>'+
  '<div class="brief-narrative">'+b.sentences.map(s=>'<p><span class="brief-kind">'+esc(s.kind)+'</span> '+esc(s.text)+' '+link(s.href,s.label)+'</p>').join('')+'</div>'+
  '<div class="brief-columns"><section class="brief-check"><h3>관전 포인트</h3><ul>'+checks+'<li>다음 거래일: 지수와 상승 종목 수가 함께 개선되는지 확인</li><li>중기: 관심 기업의 실적·가이던스 확인 / 장기: 현금흐름·희석 점검</li></ul><p>'+link('https://www.federalreserve.gov/newsevents/calendar.htm','연준 공식 일정')+' · '+link('https://www.bls.gov/schedule/','물가·고용 공식 일정')+'</p><small>기사 발행일과 실제 발표·사건 발생일은 다릅니다. 확인되지 않은 행사 날짜는 기재하지 않습니다.</small></section>'+
  '<section class="brief-risk"><h3>리스크 요인 · Opinion</h3><ul>'+(risks||'<li>기간 내 관련 기사가 확인되지 않아 뉴스 기반 리스크 판단 보류</li>')+'<li>자료 시점 차이: Finviz 시세 기준시각 미제공으로 지수 종가와 완전히 같은 시각의 비교는 아닙니다.</li></ul></section></div>'+

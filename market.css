@@ -14,3 +14,18 @@
 .macro-grid .tiny-chart{width:100%;height:45px;margin-top:10px}.ranking-scroll{overflow-x:auto}.ranking-table{min-width:760px;width:100%}.ranking-table td,.ranking-table th{padding:6px 9px;font-size:12px;line-height:1.25}.ranking-table .company-link{font-size:15px}.ranking-table small{display:block;font-size:10px;color:#a9b7ca;margin-top:3px}.ranking-check{padding:2px 7px;min-width:25px;font-size:12px}.rank-number{font-size:16px!important;font-weight:700;color:#82b7ff}.company-research{padding:15px;margin-top:14px;background:#0d1726;border:1px solid #2c405d;border-radius:12px}.company-research h4{margin:12px 0 6px}.company-research small{display:block;font-size:11px;color:#9baec8}.company-research p{font-size:13px;line-height:1.6}.watch-detail{max-width:calc(100vw - 110px)}
 
 @media(max-width:700px){.macro-grid>.stat>b{display:block;font-size:12px;line-height:1.3}.macro-grid>.stat>span{font-size:12px}.macro-grid .tiny-chart{height:32px;margin-top:6px}.mr-gauge{min-width:0;padding:10px}.mr-gauge span{font-size:12px;overflow-wrap:anywhere}}
+
+/* Dated investment research, independent of score calculations. */
+.investment-review{overflow-wrap:anywhere;min-width:0}
+.investment-review>details>summary{cursor:pointer;line-height:1.6;padding:8px 0}
+.research-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.research-card{min-width:0;border:1px solid var(--line);border-radius:12px;padding:16px}
+.research-card p,.research-card li,.research-corrections p{line-height:1.75}
+.research-card ul{padding-left:20px}
+.research-status{font-size:12px;border:1px solid #526987;border-radius:6px;padding:3px 7px;color:#bcd4f6}
+.research-reconsider{border-left:3px solid #a68551;padding-left:10px}
+.research-tickers{display:flex;flex-wrap:wrap;gap:7px}
+.research-tickers span{font-size:12px;color:var(--muted);padding:5px}
+.research-age,.research-corrections small{font-size:12px;color:var(--muted)}
+.research-corrections{margin-top:16px;border-top:1px solid var(--line);padding-top:10px}
+@media(max-width:700px){.research-grid{grid-template-columns:minmax(0,1fr)}}

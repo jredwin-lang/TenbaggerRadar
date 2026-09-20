@@ -16,17 +16,27 @@ const server=http.createServer((req,res)=>{
    page.on('pageerror',e=>errors.push(e.stack||e.message));page.on('console',m=>{if(m.type()==='error')console.error('BROWSER:',m.text())});
    await page.goto('http://127.0.0.1:'+server.address().port);
    await page.locator('#morning-brief').waitFor().catch(e=>{console.error('PAGE ERRORS:',JSON.stringify(errors));throw e});
-   assert.equal(await page.locator('.workspace-intro .eyebrow').innerText(),'TENBAGGER RADAR v2.65 · MARKET WORKSPACE');
-   assert.ok((await page.locator('script[src]').evaluateAll(nodes=>nodes.map(n=>n.src))).every(src=>new URL(src).searchParams.get('v')==='2.65'),'Every module must have the new cache key');
+   assert.equal(await page.locator('.workspace-intro .eyebrow').innerText(),'TENBAGGER RADAR v2.66 · MARKET WORKSPACE');
+   assert.ok((await page.locator('script[src]').evaluateAll(nodes=>nodes.map(n=>n.src))).every(src=>new URL(src).searchParams.get('v')==='2.66'),'Every module must have the new cache key');
+   await page.locator('#investment-review .research-grid').waitFor({state:'attached'});
+   assert.equal(await page.locator('#investment-review .research-card').count(),6);
+   await page.locator('#investment-review > details > summary').click();
+   assert.match(await page.locator('#investment-review').innerText(),/의료기기 승인과 신약 승인/);
+   assert.equal(await page.locator('#investment-review [data-stock="us:TWST"]').count(),0);
+   await page.locator('#investment-review [data-stock="us:NVDA"]').click();
+   assert.equal(await page.locator('dialog[open]').count(),1);
+   await page.getByRole('button',{name:'상세 닫기',exact:true}).click();
    const layout=await page.evaluate(()=>({macro:getComputedStyle(document.querySelector('.macro-grid')).gridTemplateColumns.split(' ').length,overflow:document.documentElement.scrollWidth>innerWidth+1}));
    if(width<=430){assert.equal(layout.macro,3)}
    assert.equal(layout.overflow,false,JSON.stringify({width,layout}));
    await page.getByRole('button',{name:'텐배거 레이더',exact:true}).click();
    await page.getByRole('button',{name:'매크로·히트맵',exact:true}).click();
    assert.equal(await page.locator('#morning-brief').count(),1);
+   assert.equal(await page.locator('#investment-review').count(),1);
    await page.getByRole('button',{name:'투자 계산기',exact:true}).click();
    await page.getByRole('button',{name:'매크로·히트맵',exact:true}).click();
    assert.equal(await page.locator('#morning-brief').count(),1);
+   assert.equal(await page.locator('#investment-review').count(),1);
    assert.equal(await page.locator('#market-regime-v27').count(),0);assert.equal(await page.locator('.brief-narrative > p').count(),5);assert.equal(await page.locator('#sector-summary').count(),1);assert.deepEqual(errors,[]);
    console.log(JSON.stringify({width,...layout,status:'passed'}));await page.close();
   }

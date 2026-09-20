@@ -5,7 +5,7 @@ let storeInitialized=false,data=null,active='macro',view='cards',selectedSector=
 try{const saved=JSON.parse(localStorage.getItem('radar.workspace.v1'));if(saved&&Array.isArray(saved.us)&&Array.isArray(saved.kr)&&Array.isArray(saved.pins)){store=saved;storeInitialized=true}}catch(e){}
 const save=()=>{try{localStorage.setItem('radar.workspace.v1',JSON.stringify(store))}catch(e){$('#workspace-status').textContent='브라우저 저장을 사용할 수 없습니다. 목록을 내보내 보관하세요.'}};
 const main=$('main'),radar=document.createElement('div');radar.id='pane-radar';radar.className='workspace-pane';while(main.firstChild)radar.append(main.firstChild);main.append(radar);radar.hidden=true;
-const intro=document.createElement('div');intro.className='workspace-intro';intro.innerHTML='<div class="eyebrow">TENBAGGER RADAR v2.65 · MARKET WORKSPACE</div><h2>시장 흐름부터 종목 진입 계획까지</h2><p id="workspace-status" class="source-status">검증된 시장 데이터 불러오는 중…</p>';
+const intro=document.createElement('div');intro.className='workspace-intro';intro.innerHTML='<div class="eyebrow">TENBAGGER RADAR v2.66 · MARKET WORKSPACE</div><h2>시장 흐름부터 종목 진입 계획까지</h2><p id="workspace-status" class="source-status">검증된 시장 데이터 불러오는 중…</p>';
 const nav=document.createElement('nav');nav.className='workspace-nav';nav.setAttribute('aria-label','대시보드 화면');
 const tabs=[['macro','매크로·히트맵'],['radar','텐배거 레이더'],['us','미국 관심종목'],['kr','한국 관심종목'],['best','랭킹'],['calc','투자 계산기']];
 nav.innerHTML=tabs.map(([id,label])=>'<button data-tab="'+id+'" aria-controls="pane-'+id+'" aria-selected="'+(id==='macro')+'">'+label+'</button>').join('');main.prepend(nav);main.prepend(intro);
